@@ -9,7 +9,7 @@ static void glfw_error_callback(int error, const char* description) {
     std::cerr << "GLFW error : " << error << " : " << description << std::endl;
 }
 
-int main() {
+int main(int argc, char* argv[]) {
     glfwSetErrorCallback(glfw_error_callback);
     if (!glfwInit())
         exit(-1);
@@ -42,6 +42,7 @@ int main() {
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 
+        // All the rendered func should be call here
         ImGui::Begin("Hello, world!");
         ImGui::Text("This is a basic Dear ImGui window.");
         ImGui::End();
