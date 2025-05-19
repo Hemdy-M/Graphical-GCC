@@ -2,22 +2,28 @@
 #include <backends/imgui_impl_glfw.h>
 #include <backends/imgui_impl_opengl3.h>
 #include <GLFW/glfw3.h>
-#include <stdio.h>
+#include <iostream>
+#include <string>
 
 static void glfw_error_callback(int error, const char* description) {
-    fprintf(stderr, "Glfw Error %d: %s\n", error, description);
+    std::cerr << "GLFW error : " << error << " : " << description << std::endl;
 }
 
 int main() {
     glfwSetErrorCallback(glfw_error_callback);
-    if (!glfwInit()) return 1;
+    if (!glfwInit())
+        exit(-1);
 
-    const char* glsl_version = "#version 130";
+    std::string glsl_version = "#version 130";
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
+    glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
-    GLFWwindow* window = glfwCreateWindow(1280, 720, "Dear ImGui Example", nullptr, nullptr);
-    if (!window) return 1;
+    GLFWwindow* window = glfwCreateWindow(360, 480, "Dear ImGui Example", nullptr, nullptr);
+    if (!window) {
+        glfwTerminate();
+        exit(-1);
+    }
     glfwMakeContextCurrent(window);
     glfwSwapInterval(1);
 
@@ -27,7 +33,7 @@ int main() {
 
     ImGui::StyleColorsDark();
     ImGui_ImplGlfw_InitForOpenGL(window, true);
-    ImGui_ImplOpenGL3_Init(glsl_version);
+    ImGui_ImplOpenGL3_Init(glsl_version.c_str());
 
     while (!glfwWindowShouldClose(window)) {
         glfwPollEvents();
@@ -41,13 +47,9 @@ int main() {
         ImGui::End();
 
         ImGui::Render();
-        int display_w, display_h;
-        glfwGetFramebufferSize(window, &display_w, &display_h);
-        glViewport(0, 0, display_w, display_h);
-        glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+
         glClear(GL_COLOR_BUFFER_BIT);
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
         glfwSwapBuffers(window);
     }
 
@@ -56,6 +58,4 @@ int main() {
     ImGui::DestroyContext();
     glfwDestroyWindow(window);
     glfwTerminate();
-
-    return 0;
 }
