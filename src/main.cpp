@@ -9,7 +9,7 @@ static void glfw_error_callback(int error, const char* description) {
     std::cerr << "GLFW error : " << error << " : " << description << std::endl;
 }
 
-int main(int argc, char* argv[]) {
+int main(const int argc, const char* argv[]) {
     glfwSetErrorCallback(glfw_error_callback);
     if (!glfwInit())
         exit(-1);
