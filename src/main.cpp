@@ -19,7 +19,7 @@ int main(const int argc, const char* argv[]) {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
     glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
-    GLFWwindow* window = glfwCreateWindow(360, 480, "Dear ImGui Example", nullptr, nullptr);
+    GLFWwindow* window = glfwCreateWindow(1280, 720, "Dear ImGui Example", nullptr, nullptr);
     if (!window) {
         glfwTerminate();
         exit(-1);
@@ -35,12 +35,18 @@ int main(const int argc, const char* argv[]) {
     ImGui_ImplGlfw_InitForOpenGL(window, true);
     ImGui_ImplOpenGL3_Init(glsl_version.c_str());
 
+    // This is pointless but hey! You're not gonna read this after all ;)
+    bool* openDemo = new bool;
+    *openDemo = true;
+
     while (!glfwWindowShouldClose(window)) {
         glfwPollEvents();
 
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
+
+        ImGui::ShowDemoWindow(openDemo);
 
         // All the rendered func should be call here
         ImGui::Begin("Hello, world!");
@@ -54,6 +60,7 @@ int main(const int argc, const char* argv[]) {
         glfwSwapBuffers(window);
     }
 
+    delete openDemo;
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
