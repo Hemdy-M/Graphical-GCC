@@ -21,6 +21,19 @@ void App::InitializedGLFWAndOtherStuff(GLFWerrorfun callback) noexcept {
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // Only for MacUser
 }
 
+GLFWwindow* App::CreateWindow() noexcept {
+    GLFWwindow* win = glfwCreateWindow(480, 720, "ImGCC", nullptr, nullptr);
+    if (!win) {
+        std::cerr << "The window is not initialized" << std::endl;
+        glfwTerminate();
+        exit(-1);
+    }
+    glfwMakeContextCurrent(win);
+    glfwSwapInterval(1);
+
+    return win;
+}
+
 void App::SetupImGUI(GLFWwindow* win) noexcept {
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();

@@ -9,22 +9,14 @@ static void glfw_error_callback(int error, const char* description);
 
 int main(int, char**) {
     App::InitializedGLFWAndOtherStuff(glfw_error_callback);
-    GLFWwindow* window = glfwCreateWindow(480, 720, "ImGCC", nullptr, nullptr);
-    if (!window) {
-        std::cerr << "The window is not initialized" << std::endl;
-        glfwTerminate();
-        exit(-1);
-    }
-    glfwMakeContextCurrent(window);
-    glfwSwapInterval(1);
+    auto* win = App::CreateWindow();
+    App::SetupImGUI(win);
 
-    App::SetupImGUI(window);
-
-    while (!glfwWindowShouldClose(window)) {
-        App::Update(window);
+    while (!glfwWindowShouldClose(win)) {
+        App::Update(win);
     }
 
-    App::TerminateProg(window);
+    App::TerminateProg(win);
 }
 
 static void glfw_error_callback(int error, const char* description) {
