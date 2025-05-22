@@ -3,63 +3,28 @@
 #include <backends/imgui_impl_opengl3.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
-#include <string>
 #include <application.hpp>
 
 static void glfw_error_callback(int error, const char* description);
 
-int main(const int argc, const char* argv[]) {
-    glfwSetErrorCallback(glfw_error_callback);
-    if (!glfwInit())
-        exit(-1);
-
-    std::string glsl_version = "#version 130";
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
-    glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
-
-    GLFWwindow* window = glfwCreateWindow(480, 720, "Dear ImGui Example", nullptr, nullptr);
+int main(int, char**) {
+    App::InitializedGLFWAndOtherStuff(glfw_error_callback);
+    GLFWwindow* window = glfwCreateWindow(480, 720, "ImGCC", nullptr, nullptr);
     if (!window) {
+        std::cerr << "The window is not initialized" << std::endl;
         glfwTerminate();
         exit(-1);
     }
     glfwMakeContextCurrent(window);
     glfwSwapInterval(1);
 
-    IMGUI_CHECKVERSION();
-    ImGui::CreateContext();
-    auto& io = ImGui::GetIO(); (void)io;
-
-    ImGui::StyleColorsDark();
-    ImGui_ImplGlfw_InitForOpenGL(window, true);
-    ImGui_ImplOpenGL3_Init(glsl_version.c_str());
+    App::SetupImGUI(window);
 
     while (!glfwWindowShouldClose(window)) {
-        glfwPollEvents();
-
-        ImGui_ImplOpenGL3_NewFrame();
-        ImGui_ImplGlfw_NewFrame();
-        ImGui::NewFrame();
-
-        App::RenderUI();
-
-        // All the rendered func should be call here
-        ImGui::Begin("Hello, world!");
-        ImGui::Text("This is a basic Dear ImGui window.");
-        ImGui::End();
-
-        ImGui::Render();
-
-        glClear(GL_COLOR_BUFFER_BIT);
-        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-        glfwSwapBuffers(window);
+        App::Update(window);
     }
 
-    ImGui_ImplOpenGL3_Shutdown();
-    ImGui_ImplGlfw_Shutdown();
-    ImGui::DestroyContext();
-    glfwDestroyWindow(window);
-    glfwTerminate();
+    App::TerminateProg(window);
 }
 
 static void glfw_error_callback(int error, const char* description) {
