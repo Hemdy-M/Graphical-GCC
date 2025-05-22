@@ -1,13 +1,5 @@
 #include <application.hpp>
 
-void App::RenderUI() noexcept {
-    const int num = 64;
-    ImGui::Begin("My UI");
-    ImGui::TextColored(ImVec4(.0, 255.0, 255.0, 1.0), "Just a variable %d", num);
-    ImGui::Text("%s", "Hello, World!");
-    ImGui::End();
-}
-
 void App::InitializedGLFWAndOtherStuff(GLFWerrorfun callback) noexcept {
     // Call GLFW and setting up the window
     glfwSetErrorCallback(callback);
@@ -37,7 +29,6 @@ GLFWwindow* App::CreateWindow() noexcept {
 void App::SetupImGUI(GLFWwindow* win) noexcept {
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
-    auto& io = ImGui::GetIO(); (void)io;
 
     const char* glsl_version = "#version 130";
     ImGui::StyleColorsLight();
@@ -46,11 +37,17 @@ void App::SetupImGUI(GLFWwindow* win) noexcept {
 }
 
 void App::Update(GLFWwindow* win) noexcept {
+    auto& io = ImGui::GetIO();
+
+    while (!glfwWindowShouldClose(win)) {
         glfwPollEvents();
 
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
+
+        ImGui::SetNextWindowPos(ImVec2(0, 0));
+        ImGui::SetNextWindowSize(io.DisplaySize);
 
         App::RenderUI(); // Our whole UI
 
@@ -58,10 +55,28 @@ void App::Update(GLFWwindow* win) noexcept {
         glClear(GL_COLOR_BUFFER_BIT);
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
         glfwSwapBuffers(win);
+    }
 }
 
+void App::RenderUI() noexcept {
+    const int num = 64;
+    ImGui::Begin("My UI", nullptr,
+        ImGuiWindowFlags_NoMove |
+        ImGuiWindowFlags_NoDecoration |
+        ImGuiWindowFlags_NoBringToFrontOnFocus 
+    );
+    ImGui::Text("num's value   : %d", num);
+    ImGui::Text("num's address : %p", &num);
+
+    auto btn = ImGui::Button("Click me hatay!", ImVec2(120, 20));
+    if (ImGui::IsItemClicked(btn))
+        ImGui::TextUnformatted("Clicked");
+
+    ImGui::End();
+}
+
+// Clear the program and exit it
 void App::TerminateProg(GLFWwindow* win) noexcept {
-    // Clear the program and exit it
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();

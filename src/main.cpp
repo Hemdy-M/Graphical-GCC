@@ -11,11 +11,7 @@ int main(int, char**) {
     App::InitializedGLFWAndOtherStuff(glfw_error_callback);
     auto* win = App::CreateWindow();
     App::SetupImGUI(win);
-
-    while (!glfwWindowShouldClose(win)) {
-        App::Update(win);
-    }
-
+    App::Update(win);
     App::TerminateProg(win);
 }
 
