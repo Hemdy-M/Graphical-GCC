@@ -4,10 +4,9 @@
 #include <GLFW/glfw3.h>
 #include <iostream>
 #include <string>
+#include <application.hpp>
 
-static void glfw_error_callback(int error, const char* description) {
-    std::cerr << "GLFW error : " << error << " : " << description << std::endl;
-}
+static void glfw_error_callback(int error, const char* description);
 
 int main(const int argc, const char* argv[]) {
     glfwSetErrorCallback(glfw_error_callback);
@@ -19,7 +18,7 @@ int main(const int argc, const char* argv[]) {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
     glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
-    GLFWwindow* window = glfwCreateWindow(1280, 720, "Dear ImGui Example", nullptr, nullptr);
+    GLFWwindow* window = glfwCreateWindow(480, 720, "Dear ImGui Example", nullptr, nullptr);
     if (!window) {
         glfwTerminate();
         exit(-1);
@@ -29,15 +28,11 @@ int main(const int argc, const char* argv[]) {
 
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
-    ImGuiIO& io = ImGui::GetIO(); (void)io;
+    auto& io = ImGui::GetIO(); (void)io;
 
     ImGui::StyleColorsDark();
     ImGui_ImplGlfw_InitForOpenGL(window, true);
     ImGui_ImplOpenGL3_Init(glsl_version.c_str());
-
-    // This is pointless but hey! You're not gonna read this after all ;)
-    bool* openDemo = new bool;
-    *openDemo = true;
 
     while (!glfwWindowShouldClose(window)) {
         glfwPollEvents();
@@ -46,7 +41,7 @@ int main(const int argc, const char* argv[]) {
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 
-        ImGui::ShowDemoWindow(openDemo);
+        App::RenderUI();
 
         // All the rendered func should be call here
         ImGui::Begin("Hello, world!");
@@ -60,10 +55,13 @@ int main(const int argc, const char* argv[]) {
         glfwSwapBuffers(window);
     }
 
-    delete openDemo;
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
     glfwDestroyWindow(window);
     glfwTerminate();
+}
+
+static void glfw_error_callback(int error, const char* description) {
+    std::cerr << "GLFW error : " << error << " : " << description << std::endl;
 }
