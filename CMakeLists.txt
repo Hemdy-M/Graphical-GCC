@@ -32,7 +32,7 @@ include_directories(
 # === Add executable ===
 add_executable(${PROJECT_NAME}
     src/main.cpp
-    src/application.cpp
+    src/window.cpp
     ${IMGUI_SOURCES}
 )
 
