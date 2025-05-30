@@ -25,7 +25,7 @@ int main() {
         ImGui::NewFrame();
 
         static ImGuiIO& io = ImGui::GetIO();
-        
+
         Window::ImplUI(io);
 
         glClear(GL_COLOR_BUFFER_BIT);

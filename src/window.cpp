@@ -56,9 +56,6 @@ void Window::ImplUI(const ImGuiIO& io) {
         ImGuiWindowFlags_NoMove |
         ImGuiWindowFlags_NoBringToFrontOnFocus
     );
-    ImGui::Text("x value : %d", io.DisplaySize.x);
-    ImGui::Text("x adress: %p", &io.DisplaySize.x);
-    ImGui::Text("y value : %d", io.DisplaySize.y);
-    ImGui::Text("y adress: %p", &io.DisplaySize.y);
+    ImGui::Text("io adress : %p", &io);
     ImGui::End();
 }
