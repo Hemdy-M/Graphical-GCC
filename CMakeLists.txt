@@ -25,6 +25,8 @@ include_directories(libs/glfw/include)
 # === Includes ===
 include_directories(
     inc
+    inc/ui
+    inc/core
     ${IMGUI_DIR}
     ${IMGUI_BACKENDS}
 )
@@ -33,6 +35,9 @@ include_directories(
 add_executable(${PROJECT_NAME}
     src/main.cpp
     src/window.cpp
+    src/core/compiler.cpp
+    src/ui/fileExplorer.cpp
+    src/ui/compiler_ui.cpp
     ${IMGUI_SOURCES}
 )
 

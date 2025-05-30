@@ -1,6 +1,9 @@
 #pragma once
 
 #include <GLFW/glfw3.h>
+#include <imgui.h>
+#include <backends/imgui_impl_glfw.h>
+#include <backends/imgui_impl_opengl3.h>
 #include <stdexcept>
 #include <cassert>
 #include <cstdint>
@@ -23,8 +26,12 @@ public:
     uint16_t GetWidth();
     uint16_t GetHeight();
     GLFWwindow* GetGlfwWindow();
+
+    // Static functions
     // Get The singleton
     static Window& GetInstance(); // Static getter
+    static void InitGlfw();
+    static void ImplUI(const ImGuiIO& io);
 
     // Disable copying
     Window(Window& win) = delete;

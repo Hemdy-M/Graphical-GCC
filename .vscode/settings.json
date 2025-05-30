@@ -70,6 +70,8 @@
         "string_view": "cpp",
         "text_encoding": "cpp",
         "cinttypes": "cpp",
-        "*.rh": "cpp"
+        "*.rh": "cpp",
+        "fstream": "cpp",
+        "sstream": "cpp"
     }
 }
